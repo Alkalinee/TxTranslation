@@ -1269,20 +1269,24 @@ namespace Unclassified.TxLib
 				{
 					return DependencyProperty.UnsetValue;
 				}
+
+			    DateTime ConvertToDateTime(object obj) =>
+			        obj is DateTimeOffset dtos ? dtos.LocalDateTime : System.Convert.ToDateTime(obj);
+
 				DateTime dt;
 				TimeSpan ts;
 				switch (relKind)
 				{
 					case RelativeTimeKind.None:
-						dt = System.Convert.ToDateTime(values[2]);
+						dt = ConvertToDateTime(values[2]);
 						text = Tx.Time(dt, details);
 						break;
 					case RelativeTimeKind.PointInTime:
-						dt = System.Convert.ToDateTime(values[2]);
+						dt = ConvertToDateTime(values[2]);
 						text = Tx.RelativeTime(dt);
 						break;
 					case RelativeTimeKind.CurrentTimeSpan:
-						dt = System.Convert.ToDateTime(values[2]);
+						dt = ConvertToDateTime(values[2]);
 						text = Tx.TimeSpan(dt);
 						break;
 					case RelativeTimeKind.TimeSpan:
