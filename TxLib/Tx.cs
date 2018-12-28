@@ -1422,13 +1422,29 @@ namespace Unclassified.TxLib
 			}
 		}
 
-		/// <summary>
-		/// Returns a text from the dictionary.
-		/// </summary>
-		/// <param name="key">Text key to search.</param>
-		/// <param name="count">Count value to consider when selecting the text value.</param>
-		/// <returns>Text value if found, null otherwise.</returns>
-		public static string Text(string key, int count)
+	    /// <summary>
+	    /// Returns a text from the dictionary.
+	    /// </summary>
+	    /// <param name="key">Text key to search.</param>
+	    /// <returns>Text value if found, null otherwise.</returns>
+	    public static bool TryGetText(string key, out string text)
+	    {
+	        using (new ReadLock(rwlock))
+	        {
+	            text = ResolveData(GetText(key, -1), key, -1, (Dictionary<string, string>) null);
+	            if (text == null)
+	                return false;
+	            return true;
+	        }
+	    }
+
+        /// <summary>
+        /// Returns a text from the dictionary.
+        /// </summary>
+        /// <param name="key">Text key to search.</param>
+        /// <param name="count">Count value to consider when selecting the text value.</param>
+        /// <returns>Text value if found, null otherwise.</returns>
+        public static string Text(string key, int count)
 		{
 			using (new ReadLock(rwlock))
 			{
